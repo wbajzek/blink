@@ -51,7 +51,9 @@ def main():
 
     for stick in sticks:
 
-        command = sys.argv[1]
+        command = sys.argv
+        command.pop(0)
+        command = ' '.join(command)
 
         try:
           done = False
