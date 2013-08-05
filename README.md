@@ -16,4 +16,5 @@ processes that take a long time, like running automated tests.
 blink "rspec spec && cucumber"
 ~~~
 
-The initial code for this is derived from https://github.com/arvydas/blinkstick-python
+The initial code for this was derived from https://github.com/arvydas/blinkstick-python
+You will need to install libusb and blinkstick as described in his readme.
