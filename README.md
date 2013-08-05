@@ -15,3 +15,5 @@ processes that take a long time, like running automated tests.
 ~~~
 blink "rspec spec && cucumber"
 ~~~
+
+The initial code for this is derived from https://github.com/arvydas/blinkstick-python
