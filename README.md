@@ -1,7 +1,7 @@
 blink
 =====
 
-Process status utility for Blinkstick. Make it executable and copy it to bin:
+Process status utility for [Blinkstick](http://blinkstick.com/). Make it executable and copy it to bin:
 ~~~
 chmod +x blink.py
 cp blink.py ~/bin/blink
