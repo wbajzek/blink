@@ -17,64 +17,63 @@ import threading
 import os
 
 def heartbeat(stick):
-    global done
-    intensity = 0
-    up = True
-    scale = 1
-    limit = 255 * scale
+  global done
+  intensity = 0
+  up = True
+  scale = 1
+  limit = 255 * scale
 
-    try:
-      while not done:
-        stick.set_color(intensity/scale, intensity/scale, intensity/scale)
-        if up:
-          if intensity < limit:
-            intensity = intensity + 1
-          else:
-            up = False
+  try:
+    while not done:
+      stick.set_color(intensity/scale, intensity/scale, intensity/scale)
+      if up:
+        if intensity < limit:
+          intensity = intensity + 1
         else:
-          if intensity > 0:
-            intensity = intensity - 1
-          else:
-            up = True
-    except KeyboardInterrupt as e:
-      stick.set_color(0,0,0)
-      exit(0)
+          up = False
+      else:
+        if intensity > 0:
+          intensity = intensity - 1
+        else:
+          up = True
+  except KeyboardInterrupt as e:
+    stick.set_color(0,0,0)
+    exit(0)
 
 
 
 def main():
-    global sticks
-    global done
+  global sticks
+  global done
 
 
-    sticks = blinkstick.find_all()
+  sticks = blinkstick.find_all()
+  # assume the first stick. change this if you want; I only have one.
+  stick = sticks[0]
 
-    for stick in sticks:
+  command = sys.argv
+  command.pop(0)
+  command = ' '.join(command)
 
-        command = sys.argv
-        command.pop(0)
-        command = ' '.join(command)
+  try:
+    done = False
+    pulse = threading.Thread(target=heartbeat, args=(stick,))
+    pulse.start()
+    status = os.system(command)
+    done = True
+    if status == 0:
+      stick.set_color(0,127,0)
+    else:
+      stick.set_color(127,0,0)
+    print "Press enter to finish"
+    raw_input()
+    stick.set_color(0,0,0)
 
-        try:
-          done = False
-          pulse = threading.Thread(target=heartbeat, args=(sticks[0],))
-          pulse.start()
-          status = os.system(command)
-          done = True
-          if status == 0:
-            stick.set_color(0,127,0)
-          else:
-            stick.set_color(127,0,0)
-          print "Press enter to finish"
-          raw_input()
-          stick.set_color(0,0,0)
+  except Exception as e:
+    print e
+    print "Unable to run heartbeat"
 
-        except Exception as e:
-          print e
-          print "Unable to run heartbeat"
-
-
-    return 0
+  return 0
 
 
 if __name__ == "__main__":
